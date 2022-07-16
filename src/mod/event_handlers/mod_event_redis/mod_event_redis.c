@@ -23,19 +23,19 @@
  *
  * Contributor(s):
  *
- * Anthony Minessale II <anthm@freeswitch.org>
+ * Howell Yang <th15817161961@gmail.com>
  *
  *
  * mod_event_redis.c -- Framework Demo Module
  *
  */
 #include <switch.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 SWITCH_MODULE_LOAD_FUNCTION(mod_event_redis_load);
 SWITCH_MODULE_DEFINITION(mod_event_redis, mod_event_redis_load, NULL, NULL);
-
-//#define TORTURE_ME
-
 
 static void event_handler(switch_event_t *event)
 {
@@ -44,9 +44,44 @@ static void event_handler(switch_event_t *event)
 	char *xmlstr = "N/A";
 	uint8_t dofree = 0;
 
+
+	char *redis_set_cmd;
+	char *unique_id = switch_event_get_header_nil(event, "unique-id");
+
+	switch_stream_handle_t stream = { 0 };
+
+	redis_set_cmd = "default set test ";
+
+	//
+	SWITCH_STANDARD_STREAM(stream);
+
 	switch (event->event_id) {
 	case SWITCH_EVENT_LOG:
 		return;
+	case SWITCH_EVENT_CHANNEL_CREATE:
+	{
+		switch_event_serialize(event, &buf, SWITCH_TRUE);
+		if ((xml = switch_event_xmlize(event, SWITCH_VA_NONE))) {
+			xmlstr = switch_xml_toxml(xml, SWITCH_FALSE);
+			dofree++;
+		}
+		strcat(redis_set_cmd, unique_id);
+		switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_CONSOLE, "\nEVENT UNIQUE-ID:\n--------------------------------\n%s\n", redis_set_cmd);
+		if(switch_api_execute("hiredis_raw", redis_set_cmd, NULL, &stream) == SWITCH_STATUS_SUCCESS) {
+			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_CONSOLE, "\nEVENT UNIQUE-ID:\n--------------------------------\n%s\n", unique_id);
+		}
+	} break ;
+	case SWITCH_EVENT_CHANNEL_DESTROY:
+	{
+		switch_event_serialize(event, &buf, SWITCH_TRUE);
+		if ((xml = switch_event_xmlize(event, SWITCH_VA_NONE))) {
+			xmlstr = switch_xml_toxml(xml, SWITCH_FALSE);
+			dofree++;
+		}
+		// todo
+
+	} break ;
+
 	default:
 		switch_event_serialize(event, &buf, SWITCH_TRUE);
 		if ((xml = switch_event_xmlize(event, SWITCH_VA_NONE))) {
@@ -54,8 +89,8 @@ static void event_handler(switch_event_t *event)
 			dofree++;
 		}
 
-		switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_CONSOLE, "\nEVENT (text version)\n--------------------------------\n%s", buf);
-		switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_CONSOLE, "\nEVENT (xml version)\n--------------------------------\n%s\n", xmlstr);
+//		switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_CONSOLE, "\nEVENT (text version)\n--------------------------------\n%s", buf);
+//		switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_CONSOLE, "\nEVENT (xml version)\n--------------------------------\n%s\n", xmlstr);
 		break;
 	}
 
@@ -71,70 +106,16 @@ static void event_handler(switch_event_t *event)
 	}
 }
 
-#define MY_EVENT_COOL "test::cool"
-
-#ifdef TORTURE_ME
-#define TTHREADS 500
-static int THREADS = 0;
-
-static void *torture_thread(switch_thread_t *thread, void *obj)
-{
-	int y = 0;
-	int z = 0;
-	switch_core_thread_session_t *ts = obj;
-	switch_event_t *event;
-
-	z = THREADS++;
-
-	while (THREADS > 0) {
-		int x;
-		for (x = 0; x < 1; x++) {
-			if (switch_event_create_subclass(&event, SWITCH_EVENT_CUSTOM, MY_EVENT_COOL) == SWITCH_STATUS_SUCCESS) {
-				switch_event_add_header(event, "event_info", "hello world %d %d", z, y++);
-				switch_event_fire(&event);
-			}
-		}
-		switch_yield(100000);
-	}
-
-	if (ts->pool) {
-		switch_memory_pool_t *pool = ts->pool;
-		switch_core_destroy_memory_pool(&pool);
-	}
-
-	switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_DEBUG, "Thread Ended\n");
-}
-
-SWITCH_MOD_DECLARE(switch_status_t) switch_module_shutdown(void)
-{
-	THREADS = -1;
-	switch_yield(100000);
-	return SWITCH_STATUS_SUCCESS;
-}
-#endif
 
 SWITCH_MODULE_LOAD_FUNCTION(mod_event_redis_load)
 {
 	/* connect my internal structure to the blank pointer passed to me */
 	*module_interface = switch_loadable_module_create_module_interface(pool, modname);
 
-	if (switch_event_reserve_subclass(MY_EVENT_COOL) != SWITCH_STATUS_SUCCESS) {
-		switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, "Couldn't register subclass!");
-		return SWITCH_STATUS_GENERR;
-	}
-
 	if (switch_event_bind(modname, SWITCH_EVENT_ALL, SWITCH_EVENT_SUBCLASS_ANY, event_handler, NULL) != SWITCH_STATUS_SUCCESS) {
 		switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, "Couldn't bind!\n");
 		return SWITCH_STATUS_GENERR;
 	}
-#ifdef TORTURE_ME
-	if (1) {
-		int x = 0;
-		for (x = 0; x < TTHREADS; x++) {
-			switch_core_launch_thread(torture_thread, NULL);
-		}
-	}
-#endif
 
 	/* indicate that the module should continue to be loaded */
 	return SWITCH_STATUS_SUCCESS;
