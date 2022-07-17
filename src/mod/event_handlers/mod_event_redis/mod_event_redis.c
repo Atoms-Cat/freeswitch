@@ -34,8 +34,16 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+static struct {
+	uint32_t shutdown;
+	switch_memory_pool_t *pool;
+} globals;
+
 SWITCH_MODULE_LOAD_FUNCTION(mod_event_redis_load);
-SWITCH_MODULE_DEFINITION(mod_event_redis, mod_event_redis_load, NULL, NULL);
+SWITCH_MODULE_SHUTDOWN_FUNCTION(mod_event_redis_shutdown);
+SWITCH_MODULE_RUNTIME_FUNCTION(mod_event_redis_runtime);
+SWITCH_MODULE_DEFINITION(mod_event_redis, mod_event_redis_load, mod_event_redis_shutdown, mod_event_redis_runtime);
 
 static void event_handler(switch_event_t *event)
 {
@@ -44,13 +52,12 @@ static void event_handler(switch_event_t *event)
 	char *xmlstr = "N/A";
 	uint8_t dofree = 0;
 
-
 	char *redis_set_cmd;
 	char *unique_id = switch_event_get_header_nil(event, "unique-id");
 
 	switch_stream_handle_t stream = { 0 };
 
-	redis_set_cmd = "default set test ";
+	redis_set_cmd = switch_core_sprintf(globals.pool, "default set test %s", unique_id);
 
 	//
 	SWITCH_STANDARD_STREAM(stream);
@@ -65,8 +72,8 @@ static void event_handler(switch_event_t *event)
 			xmlstr = switch_xml_toxml(xml, SWITCH_FALSE);
 			dofree++;
 		}
-		strcat(redis_set_cmd, unique_id);
 		switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_CONSOLE, "\nEVENT UNIQUE-ID:\n--------------------------------\n%s\n", redis_set_cmd);
+
 		if(switch_api_execute("hiredis_raw", redis_set_cmd, NULL, &stream) == SWITCH_STATUS_SUCCESS) {
 			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_CONSOLE, "\nEVENT UNIQUE-ID:\n--------------------------------\n%s\n", unique_id);
 		}
@@ -88,9 +95,6 @@ static void event_handler(switch_event_t *event)
 			xmlstr = switch_xml_toxml(xml, SWITCH_FALSE);
 			dofree++;
 		}
-
-//		switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_CONSOLE, "\nEVENT (text version)\n--------------------------------\n%s", buf);
-//		switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_CONSOLE, "\nEVENT (xml version)\n--------------------------------\n%s\n", xmlstr);
 		break;
 	}
 
@@ -117,8 +121,23 @@ SWITCH_MODULE_LOAD_FUNCTION(mod_event_redis_load)
 		return SWITCH_STATUS_GENERR;
 	}
 
+	globals.pool = pool;
+
 	/* indicate that the module should continue to be loaded */
 	return SWITCH_STATUS_SUCCESS;
+}
+
+SWITCH_MODULE_SHUTDOWN_FUNCTION(mod_event_redis_shutdown)
+{
+	globals.shutdown = 1;
+	switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_CONSOLE, "\nmod_event_redis_shutdown:\n--------------------------------\n");
+	return SWITCH_STATUS_SUCCESS;
+}
+
+SWITCH_MODULE_RUNTIME_FUNCTION(mod_event_redis_runtime)
+{
+	switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_CONSOLE, "\nmod_event_redis_runtime:\n--------------------------------\n");
+	return SWITCH_STATUS_TERM;
 }
 
 /* For Emacs:
