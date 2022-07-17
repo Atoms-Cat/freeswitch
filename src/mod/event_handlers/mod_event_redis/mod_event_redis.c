@@ -49,6 +49,20 @@ SWITCH_MODULE_SHUTDOWN_FUNCTION(mod_event_redis_shutdown);
 SWITCH_MODULE_RUNTIME_FUNCTION(mod_event_redis_runtime);
 SWITCH_MODULE_DEFINITION(mod_event_redis, mod_event_redis_load, mod_event_redis_shutdown, mod_event_redis_runtime);
 
+//static void get_channel(char *uuid) {
+//	switch_core_session_t *session;
+//	switch_channel_t *channel;
+//
+//	if (zstr(uuid)) return;
+//	if (!(session = switch_core_session_locate(uuid))) {
+//		return;
+//	}
+//	channel = switch_core_session_get_channel(session);
+//	switch_channel_set_variable(channel, "event_redis", uuid);
+//	switch_log_printf(SWITCH_CHANNEL_SESSION_LOG(session), SWITCH_LOG_INFO, "%s\n", uuid);
+//}
+
+
 static void event_handler(switch_event_t *event)
 {
 	char *buf;
@@ -58,6 +72,8 @@ static void event_handler(switch_event_t *event)
 	char *unique_id = switch_event_get_header_nil(event, "unique-id");
 	char *direction = switch_event_get_header(event, "Caller-Direction");
 	char *core_uuid = switch_event_get_header(event, "Core-UUID");
+	char *ipv4 = switch_event_get_header(event, "FreeSWITCH-IPv4");
+	char *domain = switch_event_get_header(event, "variable_domain_name");
 	char *number = "N/A";
 	switch_xml_t xml;
 	uint8_t dofree = 0;
@@ -75,20 +91,32 @@ static void event_handler(switch_event_t *event)
 			dofree++;
 		}
 		if (!strcasecmp(direction, "inbound")) {
-			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_INFO, "event inbound: %s\n", xmlstr);
 			number = switch_event_get_header(event, "Caller-Caller-ID-Number");
+			domain = switch_event_get_header(event, "variable_domain_name");
 		}
 		if (!strcasecmp(direction, "outbound")) {
-			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_INFO, "event outbound: %s\n", xmlstr);
 			number = switch_event_get_header(event, "Caller-Callee-ID-Number");
+			domain = switch_event_get_header(event, "variable_dialed_domain");
 		}
 		redis_set_cmd = switch_core_sprintf(globals.pool, "%s hmset %s %s %s", profile_name, number, unique_id, core_uuid);
 		if(switch_api_execute("hiredis_raw", redis_set_cmd, NULL, &stream) == SWITCH_STATUS_SUCCESS) {
-			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_INFO, "Channel unique-id %s save redis", unique_id);
+			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_INFO, "Channel unique-id %s save redis\n", unique_id);
 		} else {
-			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, "Channel unique-id %s not save redis", unique_id);
+			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, "Channel unique-id %s not save redis\n", unique_id);
+		}
+
+		redis_set_cmd = switch_core_sprintf(globals.pool, "%s set %s {\"ipv4\":\"%s\",\"core-uuid\":\"%s\",\"domain\":\"%s\"}",
+											profile_name, unique_id,
+											ipv4, core_uuid, domain);
+		if(switch_api_execute("hiredis_raw", redis_set_cmd, NULL, &stream) == SWITCH_STATUS_SUCCESS) {
+			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_INFO, "Channel unique-id %s save redis\n", unique_id);
+			redis_set_cmd = switch_core_sprintf(globals.pool, "%s expire %s %s", profile_name, unique_id, "86400");
+			switch_api_execute("hiredis_raw", redis_set_cmd, NULL, &stream);
+		} else {
+			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, "Channel unique-id %s not save redis\n", unique_id);
 		}
 	} break ;
+
 	case SWITCH_EVENT_CHANNEL_DESTROY:
 	{
 		switch_event_serialize(event, &buf, SWITCH_TRUE);
@@ -97,11 +125,9 @@ static void event_handler(switch_event_t *event)
 			dofree++;
 		}
 		if (!strcasecmp(direction, "inbound")) {
-			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_INFO, "event inbound: %s\n", xmlstr);
 			number = switch_event_get_header(event, "Caller-Caller-ID-Number");
 		}
 		if (!strcasecmp(direction, "outbound")) {
-			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_INFO, "event outbound: %s\n", xmlstr);
 			number = switch_event_get_header(event, "Caller-Callee-ID-Number");
 		}
 		redis_set_cmd = switch_core_sprintf(globals.pool, "%s hdel %s %s", profile_name, number, unique_id);
@@ -120,6 +146,9 @@ static void event_handler(switch_event_t *event)
 		}
 		break;
 	}
+
+
+
 
 	switch_safe_free(buf);
 
