@@ -29,37 +29,39 @@
  * mod_event_redis.c -- Framework Demo Module
  *
  */
-#include <switch.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
+#include "mod_event_redis.h"
 
+// 定义变量
 static struct {
 	uint32_t shutdown;
 	switch_memory_pool_t *pool;
+	switch_hash_t *profiles;
 } globals;
 
+
+// 定义宏函数
+// 加载完成调用
 SWITCH_MODULE_LOAD_FUNCTION(mod_event_redis_load);
+// FreeSWITCH 停止时调用
 SWITCH_MODULE_SHUTDOWN_FUNCTION(mod_event_redis_shutdown);
+// FreeSWITCH 启动时调用
 SWITCH_MODULE_RUNTIME_FUNCTION(mod_event_redis_runtime);
 SWITCH_MODULE_DEFINITION(mod_event_redis, mod_event_redis_load, mod_event_redis_shutdown, mod_event_redis_runtime);
 
 static void event_handler(switch_event_t *event)
 {
 	char *buf;
-	switch_xml_t xml;
 	char *xmlstr = "N/A";
-	uint8_t dofree = 0;
-
+	char *profile_name = "default";
 	char *redis_set_cmd;
 	char *unique_id = switch_event_get_header_nil(event, "unique-id");
-
+	char *direction = switch_event_get_header(event, "Caller-Direction");
+	char *core_uuid = switch_event_get_header(event, "Core-UUID");
+	char *number = "N/A";
+	switch_xml_t xml;
+	uint8_t dofree = 0;
 	switch_stream_handle_t stream = { 0 };
-
-	redis_set_cmd = switch_core_sprintf(globals.pool, "default set test %s", unique_id);
-
-	//
 	SWITCH_STANDARD_STREAM(stream);
 
 	switch (event->event_id) {
@@ -72,10 +74,19 @@ static void event_handler(switch_event_t *event)
 			xmlstr = switch_xml_toxml(xml, SWITCH_FALSE);
 			dofree++;
 		}
-		switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_CONSOLE, "\nEVENT UNIQUE-ID:\n--------------------------------\n%s\n", redis_set_cmd);
-
+		if (!strcasecmp(direction, "inbound")) {
+			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_INFO, "event inbound: %s\n", xmlstr);
+			number = switch_event_get_header(event, "Caller-Caller-ID-Number");
+		}
+		if (!strcasecmp(direction, "outbound")) {
+			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_INFO, "event outbound: %s\n", xmlstr);
+			number = switch_event_get_header(event, "Caller-Callee-ID-Number");
+		}
+		redis_set_cmd = switch_core_sprintf(globals.pool, "%s hmset %s %s %s", profile_name, number, unique_id, core_uuid);
 		if(switch_api_execute("hiredis_raw", redis_set_cmd, NULL, &stream) == SWITCH_STATUS_SUCCESS) {
-			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_CONSOLE, "\nEVENT UNIQUE-ID:\n--------------------------------\n%s\n", unique_id);
+			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_INFO, "Channel unique-id %s save redis", unique_id);
+		} else {
+			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, "Channel unique-id %s not save redis", unique_id);
 		}
 	} break ;
 	case SWITCH_EVENT_CHANNEL_DESTROY:
@@ -85,8 +96,20 @@ static void event_handler(switch_event_t *event)
 			xmlstr = switch_xml_toxml(xml, SWITCH_FALSE);
 			dofree++;
 		}
-		// todo
-
+		if (!strcasecmp(direction, "inbound")) {
+			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_INFO, "event inbound: %s\n", xmlstr);
+			number = switch_event_get_header(event, "Caller-Caller-ID-Number");
+		}
+		if (!strcasecmp(direction, "outbound")) {
+			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_INFO, "event outbound: %s\n", xmlstr);
+			number = switch_event_get_header(event, "Caller-Callee-ID-Number");
+		}
+		redis_set_cmd = switch_core_sprintf(globals.pool, "%s hdel %s %s", profile_name, number, unique_id);
+		if(switch_api_execute("hiredis_raw", redis_set_cmd, NULL, &stream) == SWITCH_STATUS_SUCCESS) {
+			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_INFO, "Channel unique-id %s del redis\n", unique_id);
+		} else {
+			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, "Channel unique-id %s not del redis\n", unique_id);
+		}
 	} break ;
 
 	default:
