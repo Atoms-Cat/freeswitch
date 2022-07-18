@@ -47,6 +47,7 @@ SWITCH_MODULE_LOAD_FUNCTION(mod_event_redis_load);
 SWITCH_MODULE_SHUTDOWN_FUNCTION(mod_event_redis_shutdown);
 // FreeSWITCH 启动时调用
 SWITCH_MODULE_RUNTIME_FUNCTION(mod_event_redis_runtime);
+// 模块名称，
 SWITCH_MODULE_DEFINITION(mod_event_redis, mod_event_redis_load, mod_event_redis_shutdown, mod_event_redis_runtime);
 
 //static void get_channel(char *uuid) {
@@ -93,8 +94,7 @@ static void event_handler(switch_event_t *event)
 		if (!strcasecmp(direction, "inbound")) {
 			number = switch_event_get_header(event, "Caller-Caller-ID-Number");
 			domain = switch_event_get_header(event, "variable_domain_name");
-		}
-		if (!strcasecmp(direction, "outbound")) {
+		} else if (!strcasecmp(direction, "outbound")) {
 			number = switch_event_get_header(event, "Caller-Callee-ID-Number");
 			domain = switch_event_get_header(event, "variable_dialed_domain");
 		}
@@ -105,9 +105,9 @@ static void event_handler(switch_event_t *event)
 			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, "Channel unique-id %s not save redis\n", unique_id);
 		}
 
-		redis_set_cmd = switch_core_sprintf(globals.pool, "%s set %s {\"ipv4\":\"%s\",\"core-uuid\":\"%s\",\"domain\":\"%s\"}",
+		redis_set_cmd = switch_core_sprintf(globals.pool, "%s set %s {\"ipv4\":\"%s\",\"core-uuid\":\"%s\",\"domain\":\"%s\",\"number\":\"%s\"}",
 											profile_name, unique_id,
-											ipv4, core_uuid, domain);
+											ipv4, core_uuid, domain, number);
 		if(switch_api_execute("hiredis_raw", redis_set_cmd, NULL, &stream) == SWITCH_STATUS_SUCCESS) {
 			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_INFO, "Channel unique-id %s save redis\n", unique_id);
 			redis_set_cmd = switch_core_sprintf(globals.pool, "%s expire %s %s", profile_name, unique_id, "86400");
@@ -126,8 +126,7 @@ static void event_handler(switch_event_t *event)
 		}
 		if (!strcasecmp(direction, "inbound")) {
 			number = switch_event_get_header(event, "Caller-Caller-ID-Number");
-		}
-		if (!strcasecmp(direction, "outbound")) {
+		} else if (!strcasecmp(direction, "outbound")) {
 			number = switch_event_get_header(event, "Caller-Callee-ID-Number");
 		}
 		redis_set_cmd = switch_core_sprintf(globals.pool, "%s hdel %s %s", profile_name, number, unique_id);
@@ -146,9 +145,6 @@ static void event_handler(switch_event_t *event)
 		}
 		break;
 	}
-
-
-
 
 	switch_safe_free(buf);
 
