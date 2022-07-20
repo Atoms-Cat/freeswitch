@@ -66,19 +66,18 @@ SWITCH_MODULE_DEFINITION(mod_event_redis, mod_event_redis_load, mod_event_redis_
 static void save_channel_info_to_redis(switch_event_t *event, char *unique_id, switch_stream_handle_t stream)
 {
 	char *redis_set_cmd;
+	char *json;
 	cJSON *data = NULL;
-
 	switch_event_serialize_json_obj(event, &data);
 
-	for (int i = 0; i < cJSON_GetArraySize(data); i++) {
-		cJSON *str = cJSON_GetArrayItem(data, i);
-		if (str->type == cJSON_String) {
-			redis_set_cmd = switch_core_sprintf(globals.pool, "%s hmset %s %s %s", globals.profile_name, unique_id, str->string, switch_core_sprintf(globals.pool, "'%s'", str->valuestring));
-			if(switch_api_execute("hiredis_raw", redis_set_cmd, NULL, &stream) != SWITCH_STATUS_SUCCESS) {
-				switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, "Channel unique-id %s %s ,not save redis\n", unique_id, redis_set_cmd);
-			}
-		}
+	switch_event_serialize_json(event, &json);
+	redis_set_cmd = switch_core_sprintf(globals.pool, "%s set %s %s", globals.profile_name, unique_id, switch_core_sprintf(globals.pool, "'%s'", json));
+	if(switch_api_execute("hiredis_raw", redis_set_cmd, NULL, &stream) != SWITCH_STATUS_SUCCESS) {
+		switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, "Channel unique-id %s %s ,not save redis\n", unique_id, redis_set_cmd);
 	}
+	// 配置redis key 失效时间
+	redis_set_cmd = switch_core_sprintf(globals.pool, "%s expire %s %s", globals.profile_name, unique_id, "86400");
+	switch_api_execute("hiredis_raw", redis_set_cmd, NULL, &stream);
 
 	switch_safe_free(data);
 
@@ -122,27 +121,6 @@ static void event_handler(switch_event_t *event)
 		} else {
 			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, "Channel unique-id %s not save redis\n", unique_id);
 		}
-		save_channel_info_to_redis(event, unique_id, stream);
-		// 配置redis key 失效时间
-		redis_set_cmd = switch_core_sprintf(globals.pool, "%s expire %s %s", globals.profile_name, unique_id, "86400");
-		switch_api_execute("hiredis_raw", redis_set_cmd, NULL, &stream);
-	} break ;
-
-	case SWITCH_EVENT_CHANNEL_UUID:
-	case SWITCH_EVENT_CHANNEL_ANSWER:
-	case SWITCH_EVENT_CHANNEL_PROGRESS_MEDIA:
-	case SWITCH_EVENT_CODEC:
-	case SWITCH_EVENT_CHANNEL_HOLD:
-	case SWITCH_EVENT_CHANNEL_UNHOLD:
-	case SWITCH_EVENT_CHANNEL_EXECUTE:
-	case SWITCH_EVENT_CHANNEL_ORIGINATE:
-	case SWITCH_EVENT_CALL_UPDATE:
-	case SWITCH_EVENT_CHANNEL_CALLSTATE:
-	case SWITCH_EVENT_CHANNEL_STATE:
-	case SWITCH_EVENT_CHANNEL_BRIDGE:
-	case SWITCH_EVENT_CHANNEL_UNBRIDGE:
-	case SWITCH_EVENT_CALL_SECURE:
-	{
 		save_channel_info_to_redis(event, unique_id, stream);
 	} break ;
 
