@@ -145,6 +145,29 @@ static void event_handler(switch_event_t *event)
 		save_channel_info_to_redis(event, unique_id, stream);
 	} break ;
 
+	case SWITCH_EVENT_CHANNEL_UUID:
+	case SWITCH_EVENT_CHANNEL_ANSWER:
+	case SWITCH_EVENT_CHANNEL_PROGRESS_MEDIA:
+	case SWITCH_EVENT_CODEC:
+	case SWITCH_EVENT_CHANNEL_HOLD:
+	case SWITCH_EVENT_CHANNEL_UNHOLD:
+	case SWITCH_EVENT_CHANNEL_EXECUTE:
+	case SWITCH_EVENT_CHANNEL_ORIGINATE:
+	case SWITCH_EVENT_CALL_UPDATE:
+	case SWITCH_EVENT_CHANNEL_CALLSTATE:
+	case SWITCH_EVENT_CHANNEL_STATE:
+	case SWITCH_EVENT_CHANNEL_BRIDGE:
+	case SWITCH_EVENT_CHANNEL_UNBRIDGE:
+	case SWITCH_EVENT_CALL_SECURE:
+	{
+		switch_event_serialize(event, &buf, SWITCH_TRUE);
+		if ((xml = switch_event_xmlize(event, SWITCH_VA_NONE))) {
+			xmlstr = switch_xml_toxml(xml, SWITCH_FALSE);
+			dofree++;
+		}
+		save_channel_info_to_redis(event, unique_id, stream);
+	} break ;
+
 	default:
 		switch_event_serialize(event, &buf, SWITCH_TRUE);
 		if ((xml = switch_event_xmlize(event, SWITCH_VA_NONE))) {
