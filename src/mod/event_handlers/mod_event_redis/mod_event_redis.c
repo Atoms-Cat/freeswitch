@@ -32,7 +32,7 @@
 
 #include "mod_event_redis.h"
 
-// 定义变量
+// 定义全局变量
 static struct {
 	char *profile_name;
 	uint32_t shutdown;
@@ -42,27 +42,31 @@ static struct {
 
 
 // 定义宏函数
-// 加载完成调用
+// 模块加载完成调用该函数
 SWITCH_MODULE_LOAD_FUNCTION(mod_event_redis_load);
-// FreeSWITCH 停止时调用
+// 模块停止时调用该函数
 SWITCH_MODULE_SHUTDOWN_FUNCTION(mod_event_redis_shutdown);
-// FreeSWITCH 启动时调用
+// 模块运行时调用该函数
 SWITCH_MODULE_RUNTIME_FUNCTION(mod_event_redis_runtime);
-// 模块名称，
+
+// 模块定义入口
+// SWITCH_MODULE_DEFINITION(模块name，load函数，shutdown函数，runtime函数)
 SWITCH_MODULE_DEFINITION(mod_event_redis, mod_event_redis_load, mod_event_redis_shutdown, mod_event_redis_runtime);
 
-//static void get_channel(char *uuid) {
-//	switch_core_session_t *session;
-//	switch_channel_t *channel;
-//
-//	if (zstr(uuid)) return;
-//	if (!(session = switch_core_session_locate(uuid))) {
-//		return;
-//	}
-//	channel = switch_core_session_get_channel(session);
-//	switch_channel_set_variable(channel, "event_redis", uuid);
-//	switch_log_printf(SWITCH_CHANNEL_SESSION_LOG(session), SWITCH_LOG_INFO, "%s\n", uuid);
-//}
+static void get_channel(char *uuid) {
+	switch_core_session_t *session;
+	switch_channel_t *channel;
+
+	if (zstr(uuid)) return;
+	if (!(session = switch_core_session_locate(uuid))) {
+		return;
+	}
+	channel = switch_core_session_get_channel(session);
+	switch_channel_set_variable(channel, "event_redis", uuid);
+	switch_log_printf(SWITCH_CHANNEL_SESSION_LOG(session), SWITCH_LOG_INFO, "%s\n", uuid);
+}
+
+
 static void save_channel_info_to_redis(switch_event_t *event, char *unique_id, switch_stream_handle_t stream)
 {
 	char *redis_set_cmd;
@@ -82,6 +86,7 @@ static void save_channel_info_to_redis(switch_event_t *event, char *unique_id, s
 
 	switch_safe_free(data);
 
+	get_channel(unique_id);
 }
 
 static void event_handler(switch_event_t *event)
@@ -190,12 +195,13 @@ static void event_handler(switch_event_t *event)
 	}
 }
 
-
+// 实现模块加载时被调用函数的逻辑
 SWITCH_MODULE_LOAD_FUNCTION(mod_event_redis_load)
 {
 	/* connect my internal structure to the blank pointer passed to me */
 	*module_interface = switch_loadable_module_create_module_interface(pool, modname);
 
+	// 绑定事件，并且回调指定的函数 event_handler
 	if (switch_event_bind(modname, SWITCH_EVENT_ALL, SWITCH_EVENT_SUBCLASS_ANY, event_handler, NULL) != SWITCH_STATUS_SUCCESS) {
 		switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, "Couldn't bind!\n");
 		return SWITCH_STATUS_GENERR;
