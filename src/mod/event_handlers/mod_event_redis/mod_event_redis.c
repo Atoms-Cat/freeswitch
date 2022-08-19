@@ -71,6 +71,7 @@ static void save_channel_info_to_redis(switch_event_t *event, char *unique_id, s
 	switch_event_serialize_json_obj(event, &data);
 
 	switch_event_serialize_json(event, &json);
+	//组装redis命令字符串
 	redis_set_cmd = switch_core_sprintf(globals.pool, "%s set %s %s", globals.profile_name, unique_id, switch_core_sprintf(globals.pool, "'%s'", json));
 	if(switch_api_execute("hiredis_raw", redis_set_cmd, NULL, &stream) != SWITCH_STATUS_SUCCESS) {
 		switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, "Channel unique-id %s %s ,not save redis\n", unique_id, redis_set_cmd);
@@ -101,80 +102,80 @@ static void event_handler(switch_event_t *event)
 	// todo get to config.xml
 	globals.profile_name = "default";
 	switch (event->event_id) {
-	case SWITCH_EVENT_LOG:
-		return;
-	case SWITCH_EVENT_CHANNEL_CREATE:
-	{
-		switch_event_serialize(event, &buf, SWITCH_TRUE);
-		if ((xml = switch_event_xmlize(event, SWITCH_VA_NONE))) {
-			xmlstr = switch_xml_toxml(xml, SWITCH_FALSE);
-			dofree++;
-		}
-		if (!strcasecmp(direction, "inbound")) {
-			number = switch_event_get_header(event, "Caller-Caller-ID-Number");
-		} else if (!strcasecmp(direction, "outbound")) {
-			number = switch_event_get_header(event, "Caller-Callee-ID-Number");
-		}
-		redis_set_cmd = switch_core_sprintf(globals.pool, "%s hmset %s %s %s", globals.profile_name, number, unique_id, core_uuid);
-		if(switch_api_execute("hiredis_raw", redis_set_cmd, NULL, &stream) == SWITCH_STATUS_SUCCESS) {
-			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_INFO, "Channel unique-id %s save redis\n", unique_id);
-		} else {
-			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, "Channel unique-id %s not save redis\n", unique_id);
-		}
-		save_channel_info_to_redis(event, unique_id, stream);
-	} break ;
+		case SWITCH_EVENT_LOG:
+			return;
+		case SWITCH_EVENT_CHANNEL_CREATE:
+		{
+			switch_event_serialize(event, &buf, SWITCH_TRUE);
+			if ((xml = switch_event_xmlize(event, SWITCH_VA_NONE))) {
+				xmlstr = switch_xml_toxml(xml, SWITCH_FALSE);
+				dofree++;
+			}
+			if (!strcasecmp(direction, "inbound")) {
+				number = switch_event_get_header(event, "Caller-Caller-ID-Number");
+			} else if (!strcasecmp(direction, "outbound")) {
+				number = switch_event_get_header(event, "Caller-Callee-ID-Number");
+			}
+			redis_set_cmd = switch_core_sprintf(globals.pool, "%s hmset %s %s %s", globals.profile_name, number, unique_id, core_uuid);
+			if(switch_api_execute("hiredis_raw", redis_set_cmd, NULL, &stream) == SWITCH_STATUS_SUCCESS) {
+				switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_INFO, "Channel unique-id %s save redis\n", unique_id);
+			} else {
+				switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, "Channel unique-id %s not save redis\n", unique_id);
+			}
+			save_channel_info_to_redis(event, unique_id, stream);
+		} break ;
 
-	case SWITCH_EVENT_CHANNEL_DESTROY:
-	{
-		switch_event_serialize(event, &buf, SWITCH_TRUE);
-		if ((xml = switch_event_xmlize(event, SWITCH_VA_NONE))) {
-			xmlstr = switch_xml_toxml(xml, SWITCH_FALSE);
-			dofree++;
-		}
-		if (!strcasecmp(direction, "inbound")) {
-			number = switch_event_get_header(event, "Caller-Caller-ID-Number");
-		} else if (!strcasecmp(direction, "outbound")) {
-			number = switch_event_get_header(event, "Caller-Callee-ID-Number");
-		}
-		redis_set_cmd = switch_core_sprintf(globals.pool, "%s hdel %s %s", globals.profile_name, number, unique_id);
-		if(switch_api_execute("hiredis_raw", redis_set_cmd, NULL, &stream) == SWITCH_STATUS_SUCCESS) {
-			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_INFO, "Channel unique-id %s del redis\n", unique_id);
-		} else {
-			switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, "Channel unique-id %s not del redis\n", unique_id);
-		}
-		save_channel_info_to_redis(event, unique_id, stream);
-	} break ;
+		case SWITCH_EVENT_CHANNEL_DESTROY:
+		{
+			switch_event_serialize(event, &buf, SWITCH_TRUE);
+			if ((xml = switch_event_xmlize(event, SWITCH_VA_NONE))) {
+				xmlstr = switch_xml_toxml(xml, SWITCH_FALSE);
+				dofree++;
+			}
+			if (!strcasecmp(direction, "inbound")) {
+				number = switch_event_get_header(event, "Caller-Caller-ID-Number");
+			} else if (!strcasecmp(direction, "outbound")) {
+				number = switch_event_get_header(event, "Caller-Callee-ID-Number");
+			}
+			redis_set_cmd = switch_core_sprintf(globals.pool, "%s hdel %s %s", globals.profile_name, number, unique_id);
+			if(switch_api_execute("hiredis_raw", redis_set_cmd, NULL, &stream) == SWITCH_STATUS_SUCCESS) {
+				switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_INFO, "Channel unique-id %s del redis\n", unique_id);
+			} else {
+				switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, "Channel unique-id %s not del redis\n", unique_id);
+			}
+			save_channel_info_to_redis(event, unique_id, stream);
+		} break ;
 
-	case SWITCH_EVENT_CHANNEL_UUID:
-	case SWITCH_EVENT_CHANNEL_ANSWER:
-	case SWITCH_EVENT_CHANNEL_PROGRESS_MEDIA:
-	case SWITCH_EVENT_CODEC:
-	case SWITCH_EVENT_CHANNEL_HOLD:
-	case SWITCH_EVENT_CHANNEL_UNHOLD:
-	case SWITCH_EVENT_CHANNEL_EXECUTE:
-	case SWITCH_EVENT_CHANNEL_ORIGINATE:
-	case SWITCH_EVENT_CALL_UPDATE:
-	case SWITCH_EVENT_CHANNEL_CALLSTATE:
-	case SWITCH_EVENT_CHANNEL_STATE:
-	case SWITCH_EVENT_CHANNEL_BRIDGE:
-	case SWITCH_EVENT_CHANNEL_UNBRIDGE:
-	case SWITCH_EVENT_CALL_SECURE:
-	{
-		switch_event_serialize(event, &buf, SWITCH_TRUE);
-		if ((xml = switch_event_xmlize(event, SWITCH_VA_NONE))) {
-			xmlstr = switch_xml_toxml(xml, SWITCH_FALSE);
-			dofree++;
-		}
-		save_channel_info_to_redis(event, unique_id, stream);
-	} break ;
+		case SWITCH_EVENT_CHANNEL_UUID:
+		case SWITCH_EVENT_CHANNEL_ANSWER:
+		case SWITCH_EVENT_CHANNEL_PROGRESS_MEDIA:
+		case SWITCH_EVENT_CODEC:
+		case SWITCH_EVENT_CHANNEL_HOLD:
+		case SWITCH_EVENT_CHANNEL_UNHOLD:
+		case SWITCH_EVENT_CHANNEL_EXECUTE:
+		case SWITCH_EVENT_CHANNEL_ORIGINATE:
+		case SWITCH_EVENT_CALL_UPDATE:
+		case SWITCH_EVENT_CHANNEL_CALLSTATE:
+		case SWITCH_EVENT_CHANNEL_STATE:
+		case SWITCH_EVENT_CHANNEL_BRIDGE:
+		case SWITCH_EVENT_CHANNEL_UNBRIDGE:
+		case SWITCH_EVENT_CALL_SECURE:
+		{
+			switch_event_serialize(event, &buf, SWITCH_TRUE);
+			if ((xml = switch_event_xmlize(event, SWITCH_VA_NONE))) {
+				xmlstr = switch_xml_toxml(xml, SWITCH_FALSE);
+				dofree++;
+			}
+			save_channel_info_to_redis(event, unique_id, stream);
+		} break ;
 
-	default:
-		switch_event_serialize(event, &buf, SWITCH_TRUE);
-		if ((xml = switch_event_xmlize(event, SWITCH_VA_NONE))) {
-			xmlstr = switch_xml_toxml(xml, SWITCH_FALSE);
-			dofree++;
-		}
-		break;
+		default:
+			switch_event_serialize(event, &buf, SWITCH_TRUE);
+			if ((xml = switch_event_xmlize(event, SWITCH_VA_NONE))) {
+				xmlstr = switch_xml_toxml(xml, SWITCH_FALSE);
+				dofree++;
+			}
+			break;
 	}
 
 	switch_safe_free(buf);
