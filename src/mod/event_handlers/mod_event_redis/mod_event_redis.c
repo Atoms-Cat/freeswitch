@@ -53,19 +53,31 @@ SWITCH_MODULE_RUNTIME_FUNCTION(mod_event_redis_runtime);
 // SWITCH_MODULE_DEFINITION(模块name，load函数，shutdown函数，runtime函数)
 SWITCH_MODULE_DEFINITION(mod_event_redis, mod_event_redis_load, mod_event_redis_shutdown, mod_event_redis_runtime);
 
+// 通过unique_id获取通道变量、并且设置新的变量
 static void get_channel(char *uuid) {
 	switch_core_session_t *session;
 	switch_channel_t *channel;
 
 	if (zstr(uuid)) return;
+	// 通过unique_id获取session
 	if (!(session = switch_core_session_locate(uuid))) {
 		return;
 	}
+	// 获取session中的通道数据
 	channel = switch_core_session_get_channel(session);
+	// 设置新的通道变量数据
 	switch_channel_set_variable(channel, "event_redis", uuid);
 	switch_log_printf(SWITCH_CHANNEL_SESSION_LOG(session), SWITCH_LOG_INFO, "%s\n", uuid);
 }
 
+//static void add_api_app() {
+//	switch_application_interface_t *app_interface;
+//	switch_api_interface_t *api_interface;
+//
+//	SWITCH_ADD_APP(app_interface, "hiredis_raw", "hiredis_raw", "hiredis_raw", raw_app, "", SAF_SUPPORT_NOMEDIA | SAF_ROUTING_EXEC | SAF_ZOMBIE_EXEC);
+//	SWITCH_ADD_API(api_interface, "hiredis_raw", "hiredis_raw", raw_api, "");
+//
+//}
 
 static void save_channel_info_to_redis(switch_event_t *event, char *unique_id, switch_stream_handle_t stream)
 {
@@ -87,6 +99,8 @@ static void save_channel_info_to_redis(switch_event_t *event, char *unique_id, s
 	switch_safe_free(data);
 
 	get_channel(unique_id);
+
+	// add_api_app();
 }
 
 static void event_handler(switch_event_t *event)
