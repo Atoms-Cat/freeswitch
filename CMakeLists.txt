@@ -14,7 +14,7 @@ INCLUDE_DIRECTORIES(./src/include/
         /usr/local/include/sofia-sip-1.13
         )
 
-
+ADD_COMPILE_DEFINITIONS(HAVE_OPENSSL=1)
 
 SET(freeswitch_la_SRCS
 
@@ -149,7 +149,6 @@ SET(freeswitch_la_SRCS
         ./src/include/switch_profile.h
         ./src/include/switch_rtcp_frame.h
         ./src/include/switch_spandsp.h
-        ./src/include/switch_ssl.h
         ./src/include/switch_swigable_cpp.h
         ./src/include/switch_utf8.h
         ./src/include/switch_vad.h
@@ -169,7 +168,7 @@ SET(freeswitch_la_SRCS
         ./libs/libteletone/src/libteletone_generate.h
         ./libs/libteletone/src/libteletone.h
         ./src/include/switch_odbc.h
-
+        ./src/include/switch_ssl.h
 
         )
 
