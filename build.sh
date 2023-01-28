@@ -8,4 +8,4 @@ export freeswitch_base_path=$(pwd)
 ./configure --prefix=$freeswitch_base_path/All/Debug
 
 # step 3
-make clean && make -j && make -j install
+make clean && make && make install
