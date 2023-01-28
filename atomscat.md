@@ -4,10 +4,10 @@
 ./bootstrap.sh
 
 # step 2
-./configure --prefix=/home/dev/Work/github/freeswitch/All/Debug
+./configure --prefix=./All/Debug
 
 # step 3
-make -j && make -j install 
+make clean && make -j && make -j install 
 
 ```
 
