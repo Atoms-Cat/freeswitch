@@ -8,8 +8,13 @@ export freeswitch_base_path=$(pwd)
 ./configure --prefix="${freeswitch_base_path}/All/Debug"
 
 # step 3
-make clean && make && make install 
+make -j all && make -j install 
 
+```
+
+# clean
+```shell
+make -j clean
 ```
 
 # feat module
