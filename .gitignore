@@ -281,3 +281,9 @@ images/test_text.png
 
 src/mod/codecs/mod_amrwb/test/test_amrwb
 src/mod/endpoints/mod_sofia/test/sipp-based-tests
+
+test/
+tests/
+build/
+autom4te.cache/
+.idea/
