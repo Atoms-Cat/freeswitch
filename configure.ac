@@ -716,7 +716,7 @@ PKG_CHECK_MODULES([SPANDSP], [spandsp >= 3.0],[
     AC_MSG_ERROR([no usable spandsp; please install spandsp3 devel package or equivalent])
 ])
 
-PKG_CHECK_MODULES([SOFIA_SIP], [sofia-sip-ua >= 1.13.12],[
+PKG_CHECK_MODULES([SOFIA_SIP], [sofia-sip-ua >= 1.13.15],[
   AM_CONDITIONAL([HAVE_SOFIA_SIP],[true])],[
     AC_MSG_ERROR([no usable sofia-sip; please install sofia-sip-ua devel package or equivalent])
 ])
@@ -1518,26 +1518,32 @@ PKG_CHECK_MODULES([V8FS_STATIC], [v8-6.1_static >= 6.1.298],[
   ])
 ])
 
-PKG_CHECK_MODULES([KS], [libks >= 1.8.2],[
+PKG_CHECK_MODULES([KS], [libks2 >= 2.0.0],[
   AM_CONDITIONAL([HAVE_KS],[true])],[
-    if module_enabled mod_verto; then
-      AC_MSG_ERROR([You need to either install libks or disable mod_verto in modules.conf])
-    else
-      if module_enabled mod_signalwire; then
-        AC_MSG_ERROR([You need to either install libks or disable mod_signalwire in modules.conf])
+  PKG_CHECK_MODULES([KS], [libks >= 1.8.2],[
+    AM_CONDITIONAL([HAVE_KS],[true])],[
+      if module_enabled mod_verto; then
+        AC_MSG_ERROR([You need to either install libks2 or libks or disable mod_verto in modules.conf])
       else
-        AC_MSG_RESULT([no]); AM_CONDITIONAL([HAVE_KS],[false])
+        if module_enabled mod_signalwire; then
+          AC_MSG_ERROR([You need to either install libks2 or libks or disable mod_signalwire in modules.conf])
+        else
+          AC_MSG_RESULT([no]); AM_CONDITIONAL([HAVE_KS],[false])
+        fi
       fi
-    fi
+  ])
 ])
 
-PKG_CHECK_MODULES([SIGNALWIRE_CLIENT], [signalwire_client >= 1.0.0],[
+PKG_CHECK_MODULES([SIGNALWIRE_CLIENT], [signalwire_client2 >= 2.0.0],[
   AM_CONDITIONAL([HAVE_SIGNALWIRE_CLIENT],[true])],[
-    if module_enabled mod_signalwire; then
-      AC_MSG_ERROR([You need to either install signalwire-client-c or disable mod_signalwire in modules.conf])
-    else
-      AC_MSG_RESULT([no]); AM_CONDITIONAL([HAVE_SIGNALWIRE_CLIENT],[false])
-    fi
+  PKG_CHECK_MODULES([SIGNALWIRE_CLIENT], [signalwire_client >= 1.0.0],[
+    AM_CONDITIONAL([HAVE_SIGNALWIRE_CLIENT],[true])],[
+      if module_enabled mod_signalwire; then
+        AC_MSG_ERROR([You need to either install signalwire-client-c2 or signalwire-client-c or disable mod_signalwire in modules.conf])
+      else
+        AC_MSG_RESULT([no]); AM_CONDITIONAL([HAVE_SIGNALWIRE_CLIENT],[false])
+      fi
+  ])
 ])
 
 PKG_CHECK_MODULES([AMQP], [librabbitmq >= 0.5.2],[
