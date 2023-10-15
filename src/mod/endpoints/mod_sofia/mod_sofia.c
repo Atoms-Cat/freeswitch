@@ -4734,6 +4734,7 @@ static switch_call_cause_t sofia_outgoing_channel(switch_core_session_t *session
 	switch_channel_t *o_channel = NULL;
 	sofia_gateway_t *gateway_ptr = NULL;
 	int mod = 0;
+	int rtp_ip_index=0;
 
 	*new_session = NULL;
 
@@ -5023,6 +5024,17 @@ static switch_call_cause_t sofia_outgoing_channel(switch_core_session_t *session
 		switch_core_session_set_ice(nsession);
 	}
 
+	//  self_rtp_ip start
+	if (!zstr(switch_event_get_header(var_event, "self_rtp_ip"))) {
+		while (rtp_ip_index <= 50) {
+			profile->rtpip[rtp_ip_index] = switch_core_strdup(profile->pool, switch_event_get_header(var_event, "self_rtp_ip"));
+			rtp_ip_index++;
+			if (zstr(profile->rtpip[rtp_ip_index])) { break; }
+		}
+		profile->rtpip_next = 0;
+		profile->rtpip_index = 0;
+	}
+	// self_rtp_ip end
 
 	sofia_glue_attach_private(nsession, profile, tech_pvt, dest);
 
