@@ -5028,7 +5028,7 @@ static switch_call_cause_t sofia_outgoing_channel(switch_core_session_t *session
 
 	//  self_rtp_ip start
 	if (!zstr(switch_event_get_header(var_event, "self_rtp_ip"))) {
-		tech_pvt->mparams.rtpip4 = switch_event_get_header(var_event, "self_rtp_ip");
+		tech_pvt->mparams.rtpip4 = switch_core_strdup(profile->pool, switch_event_get_header(var_event, "self_rtp_ip"));
 		tech_pvt->mparams.rtpip = tech_pvt->mparams.rtpip4;
 	}
 	// self_rtp_ip end
