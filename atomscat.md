@@ -34,6 +34,7 @@ reload mod_sofia
  //switch_core_session.c -> switch_core_session_outgoing_channel =>
  // mod_sofia.c -> sofia_outgoing_channel -> sofia_glue_attach_private(nsession, profile, tech_pvt, dest);
 	if (!zstr(switch_event_get_header(var_event, "self_rtp_ip"))) {
+		int rtp_ip_index = 0;
 		while (rtp_ip_index <= 50) {
 			profile->rtpip[rtp_ip_index] = switch_core_strdup(profile->pool, switch_event_get_header(var_event, "self_rtp_ip"));
 			rtp_ip_index++;
