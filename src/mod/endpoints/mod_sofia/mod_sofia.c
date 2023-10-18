@@ -5027,9 +5027,8 @@ static switch_call_cause_t sofia_outgoing_channel(switch_core_session_t *session
 	sofia_glue_attach_private(nsession, profile, tech_pvt, dest);
 
 	// specify rtp ip by variable
-	if (switch_true(switch_event_get_header(var_event, "rtp_ip_v4"))) {
-		tech_pvt->mparams.rtpip4 = switch_core_strdup(profile->pool, switch_event_get_header(var_event, "rtp_ip_v4"));
-		tech_pvt->mparams.rtpip = tech_pvt->mparams.rtpip4;
+	if (switch_true(switch_event_get_header(var_event, "rtp_ip"))) {
+		tech_pvt->mparams.rtpip = switch_core_strdup(profile->pool, switch_event_get_header(var_event, "rtp_ip"));
 	}
 
 	if (tech_pvt->local_url) {

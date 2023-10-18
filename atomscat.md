@@ -35,14 +35,13 @@ reload mod_sofia
  // mod_sofia.c -> sofia_outgoing_channel -> sofia_glue_attach_private(nsession, profile, tech_pvt, dest);
 	sofia_glue_attach_private(nsession, profile, tech_pvt, dest);
  // specify rtp ip by variable
-	if (!zstr(switch_event_get_header(var_event, "rtp_ip_v4"))) {
-		tech_pvt->mparams.rtpip4 = switch_core_strdup(profile->pool, switch_event_get_header(var_event, "rtp_ip_v4"));
-		tech_pvt->mparams.rtpip = tech_pvt->mparams.rtpip4;
+	if (switch_true(switch_event_get_header(var_event, "rtp_ip"))) {
+		tech_pvt->mparams.rtpip = switch_core_strdup(profile->pool, switch_event_get_header(var_event, "rtp_ip"));
 	}
     
 ```
 
 ```shell
-originate {rtp_ip_v4=127.0.0.4}sofia/external/opensips/1002 &park()
-originate {rtp_ip_v4=127.0.0.4}sofia/gateway/opensips/1002 &park()
+originate {rtp_ip=127.0.0.4}sofia/external/opensips/1002 &park()
+originate {rtp_ip=127.0.0.4}sofia/gateway/opensips/1002 &park()
 ```
