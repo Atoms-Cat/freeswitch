@@ -1,0 +1,98 @@
+[
+  {
+    "topic": "Computer Vision",
+    "title": "OpenCV Integration",
+    "files": [
+      {
+        "src/mod/applications/mod_cv/mod_cv.cpp": "Computer Vision module using OpenCV"
+      }
+    ]
+  },
+  {
+    "topic": "SMPP",
+    "title": "Short Message Peer-to-Peer Protocol",
+    "files": [
+      {
+        "src/mod/event_handlers/mod_smpp/mod_smpp.c": "SMPP module entry point"
+      },
+      {
+        "src/mod/event_handlers/mod_smpp/mod_smpp_gateway.c": "SMPP gateway implementation"
+      },
+      {
+        "src/mod/event_handlers/mod_smpp/mod_smpp_message.c": "SMPP message handling"
+      }
+    ]
+  },
+  {
+    "topic": "HTTAPI",
+    "title": "HTTP Telephony API",
+    "files": [
+      {
+        "src/mod/applications/mod_httapi/mod_httapi.c": "HTTAPI module implementation"
+      }
+    ]
+  },
+  {
+    "topic": "Billing",
+    "title": "Nibblebill Billing Module",
+    "files": [
+      {
+        "src/mod/applications/mod_nibblebill/mod_nibblebill.c": "Real-time billing module"
+      }
+    ]
+  },
+  {
+    "topic": "Call Spying",
+    "title": "Eavesdropping and Monitoring",
+    "files": [
+      {
+        "src/mod/applications/mod_spy/mod_spy.c": "User spying module"
+      }
+    ]
+  },
+  {
+    "topic": "Memcache",
+    "title": "Memcached Integration",
+    "files": [
+      {
+        "src/mod/applications/mod_memcache/mod_memcache.c": "Memcached API interface"
+      }
+    ]
+  },
+  {
+    "topic": "ENUM",
+    "title": "E.164 Number Mapping",
+    "files": [
+      {
+        "src/mod/applications/mod_enum/mod_enum.c": "ENUM lookup module"
+      }
+    ]
+  },
+  {
+    "topic": "Event Socket",
+    "title": "Event Socket Layer (ESL) Module",
+    "files": [
+      {
+        "src/mod/event_handlers/mod_event_socket/mod_event_socket.c": "Socket interface for controlling FreeSWITCH"
+      }
+    ]
+  },
+  {
+    "topic": "CDR CSV",
+    "title": "CSV Call Detail Records",
+    "files": [
+      {
+        "src/mod/event_handlers/mod_cdr_csv/mod_cdr_csv.c": "CSV CDR logger"
+      }
+    ]
+  },
+  {
+    "topic": "JSON CDR",
+    "title": "JSON Call Detail Records",
+    "files": [
+      {
+        "src/mod/event_handlers/mod_json_cdr/mod_json_cdr.c": "JSON CDR logger"
+      }
+    ]
+  }
+]

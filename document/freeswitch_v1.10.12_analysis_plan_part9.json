@@ -103,5 +103,55 @@
         "src/switch_pcm.c": "PCM audio data manipulation and interface"
       }
     ]
+  },
+  {
+    "topic": "Codecs (Audio & Video)",
+    "title": "Modern Audio Codecs: Opus & AMR",
+    "files": [
+      { "src/mod/codecs/mod_opus/mod_opus.c": "Opus codec implementation and negotiation" },
+      { "src/mod/codecs/mod_amr/mod_amr.c": "AMR codec handling" }
+    ]
+  },
+  {
+    "topic": "Codecs (Audio & Video)",
+    "title": "Video Codecs: H26x & VP8",
+    "files": [
+      { "src/mod/codecs/mod_h26x/mod_h26x.c": "H.264/H.265 video codec support" },
+      { "src/mod/codecs/mod_vp8/mod_vp8.c": "VP8 video codec support" }
+    ]
+  },
+  {
+    "topic": "Formats & Streams",
+    "title": "Stream & File Formats",
+    "files": [
+      { "src/mod/formats/mod_local_stream/mod_local_stream.c": "Local file streaming mechanism" },
+      { "src/mod/formats/mod_sndfile/mod_sndfile.c": "Libsndfile integration for various audio formats" },
+      { "src/mod/formats/mod_vlc/mod_vlc.c": "VLC based media format support" }
+    ]
+  },
+  {
+    "topic": "Say Modules (Phrase Construction)",
+    "title": "Language Specific Phrase Construction",
+    "files": [
+      { "src/mod/say/mod_say_en/mod_say_en.c": "English number/date/time phrase construction" },
+      { "src/mod/say/mod_say_zh/mod_say_zh.c": "Chinese number/date/time phrase construction" }
+    ]
+  },
+  {
+    "topic": "Core Deep Dive",
+    "title": "State Machine & I/O",
+    "files": [
+      { "src/switch_core_state_machine.c": "Core call state machine processing loop" },
+      { "src/switch_core_io.c": "Low-level I/O routines and stream handling" }
+    ]
+  },
+  {
+    "topic": "Core Deep Dive",
+    "title": "File, Speech & XML Abstractions",
+    "files": [
+      { "src/switch_core_file.c": "Core file handle abstraction" },
+      { "src/switch_core_speech.c": "ASR and TTS core abstraction layer" },
+      { "src/switch_xml.c": "Core XML parsing and registry logic" }
+    ]
   }
 ]
