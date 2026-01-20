@@ -1,0 +1,66 @@
+[
+  {
+    "topic": "Conferencing",
+    "title": "Conference Management",
+    "files": [
+      { "src/mod/applications/mod_conference/mod_conference.c": "mod_conference_load" },
+      { "src/mod/applications/mod_conference/conference_api.c": "conference_api_main" }
+    ]
+  },
+  {
+    "topic": "Event Socket Library",
+    "title": "External Control",
+    "files": [
+      { "src/mod/event_handlers/mod_event_socket/mod_event_socket.c": "mod_event_socket_load" },
+      { "src/mod/event_handlers/mod_event_socket/mod_event_socket.c": "socket_thread" }
+    ]
+  },
+  {
+    "topic": "WebRTC/Verto",
+    "title": "Web Signaling",
+    "files": [
+      { "src/mod/endpoints/mod_verto/mod_verto.c": "mod_verto_load" },
+      { "src/mod/endpoints/mod_verto/mod_verto.c": "verto_read_frame" }
+    ]
+  },
+  {
+    "topic": "Dialplan System",
+    "title": "XML Dialplan Processing",
+    "files": [
+      { "src/mod/dialplans/mod_dialplan_xml/mod_dialplan_xml.c": "mod_dialplan_xml_load" },
+      { "src/mod/dialplans/mod_dialplan_xml/mod_dialplan_xml.c": "dialplan_hunt" }
+    ]
+  },
+  {
+    "topic": "Codecs",
+    "title": "Opus Codec Integration",
+    "files": [
+      { "src/mod/codecs/mod_opus/mod_opus.c": "mod_opus_load" },
+      { "src/mod/codecs/mod_opus/mod_opus.c": "switch_opus_encode" }
+    ]
+  },
+  {
+    "topic": "File Formats",
+    "title": "Audio File Handling",
+    "files": [
+      { "src/mod/formats/mod_sndfile/mod_sndfile.c": "mod_sndfile_load" },
+      { "src/mod/formats/mod_sndfile/mod_sndfile.c": "sndfile_file_open" }
+    ]
+  },
+  {
+    "topic": "Lua Scripting",
+    "title": "Embedded Scripting",
+    "files": [
+      { "src/mod/languages/mod_lua/mod_lua.cpp": "mod_lua_load" },
+      { "src/mod/languages/mod_lua/mod_lua.cpp": "lua_parse_and_execute" }
+    ]
+  },
+  {
+    "topic": "Command Line Interface",
+    "title": "Console Interaction",
+    "files": [
+      { "src/switch_console.c": "switch_console_process" },
+      { "src/switch_console.c": "switch_console_execute" }
+    ]
+  }
+]
