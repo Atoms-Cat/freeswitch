@@ -1,0 +1,92 @@
+[
+  {
+    "topic": "Core Architecture",
+    "title": "System Initialization",
+    "files": [
+      { "src/switch_core.c": "switch_core_init" }
+    ]
+  },
+  {
+    "topic": "Core Architecture",
+    "title": "Memory Management",
+    "files": [
+      { "src/switch_core.c": "switch_core_perform_new_memory_pool" }
+    ]
+  },
+  {
+    "topic": "Event System",
+    "title": "Event Dispatching",
+    "files": [
+      { "src/switch_event.c": "switch_event_fire_detailed" }
+    ]
+  },
+  {
+    "topic": "Event System",
+    "title": "Event Subscription",
+    "files": [
+      { "src/switch_event.c": "switch_event_bind_remotes" }
+    ]
+  },
+  {
+    "topic": "Session Management",
+    "title": "Session Creation",
+    "files": [
+      { "src/switch_core_session.c": "switch_core_session_request_xml" }
+    ]
+  },
+  {
+    "topic": "Session Management",
+    "title": "State Machine",
+    "files": [
+      { "src/switch_core_session.c": "switch_core_session_run" },
+      { "src/switch_channel.c": "switch_channel_set_state" }
+    ]
+  },
+  {
+    "topic": "Media/IO Subsystem",
+    "title": "RTP Handling",
+    "files": [
+      { "src/switch_rtp.c": "switch_rtp_create" },
+      { "src/switch_rtp.c": "switch_rtp_read" },
+      { "src/switch_rtp.c": "switch_rtp_write" }
+    ]
+  },
+  {
+    "topic": "Media/IO Subsystem",
+    "title": "Media Orchestration",
+    "files": [
+      { "src/switch_core_media.c": "switch_media_handle_create" },
+      { "src/switch_core_media.c": "switch_core_media_read_frame" }
+    ]
+  },
+  {
+    "topic": "Loadable Modules",
+    "title": "Module Loading",
+    "files": [
+      { "src/switch_loadable_module.c": "switch_loadable_module_load_module_ex" }
+    ]
+  },
+  {
+    "topic": "Loadable Modules",
+    "title": "Interface Registration",
+    "files": [
+      { "src/switch_loadable_module.c": "switch_loadable_module_process" }
+    ]
+  },
+  {
+    "topic": "SIP Signaling (mod_sofia)",
+    "title": "Endpoint Initialization",
+    "files": [
+      { "src/mod/endpoints/mod_sofia/mod_sofia.c": "mod_sofia_load" },
+      { "src/mod/endpoints/mod_sofia/mod_sofia.c": "sofia_on_init" }
+    ]
+  },
+  {
+    "topic": "SIP Signaling (mod_sofia)",
+    "title": "Message Handling",
+    "files": [
+      { "src/mod/endpoints/mod_sofia/mod_sofia.c": "sofia_receive_message" },
+      { "src/mod/endpoints/mod_sofia/mod_sofia.c": "sofia_receive_event" }
+    ]
+  }
+]
