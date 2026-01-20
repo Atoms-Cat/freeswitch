@@ -1,0 +1,107 @@
+[
+  {
+    "topic": "AVMD (Advanced Voice Mail Detection)",
+    "title": "Beep Detection Logic",
+    "files": [
+      {
+        "src/mod/applications/mod_avmd/mod_avmd.c": "Module entry point and application interface"
+      },
+      {
+        "src/mod/applications/mod_avmd/avmd_amplitude.c": "Amplitude estimation logic"
+      },
+      {
+        "src/mod/applications/mod_avmd/avmd_desa2.c": "DESA-2 algorithm implementation"
+      },
+      {
+        "src/mod/applications/mod_avmd/avmd_goertzel.c": "Goertzel algorithm for frequency detection"
+      }
+    ]
+  },
+  {
+    "topic": "VAD (Voice Activity Detection)",
+    "title": "Core VAD Implementation",
+    "files": [
+      {
+        "src/switch_vad.c": "Core Voice Activity Detection logic and state machine"
+      }
+    ]
+  },
+  {
+    "topic": "CNG (Comfort Noise Generation)",
+    "title": "CNG Handling in RTP",
+    "files": [
+      {
+        "src/switch_rtp.c": "RTP handling including CNG packet generation and processing"
+      }
+    ]
+  },
+  {
+    "topic": "PLC (Packet Loss Concealment)",
+    "title": "PLC Mechanisms",
+    "files": [
+      {
+        "src/switch_spandsp.c": "PLC implementation wrapper (via spandsp)"
+      },
+      {
+        "src/switch_core_media.c": "Media core handling of PLC flags and logic"
+      }
+    ]
+  },
+  {
+    "topic": "STUN",
+    "title": "STUN Protocol Support",
+    "files": [
+      {
+        "src/switch_stun.c": "STUN packet parsing and generation"
+      }
+    ]
+  },
+  {
+    "topic": "Limit Interface",
+    "title": "Resource Limiting Logic",
+    "files": [
+      {
+        "src/switch_limit.c": "Core limit interface implementation"
+      },
+      {
+        "src/mod/applications/mod_limit/mod_limit.c": "Limit application module"
+      }
+    ]
+  },
+  {
+    "topic": "Scheduler (Core)",
+    "title": "Task Scheduling System",
+    "files": [
+      {
+        "src/switch_scheduler.c": "Core scheduler for timed tasks"
+      }
+    ]
+  },
+  {
+    "topic": "Hash Table",
+    "title": "Core Hash Table Implementation",
+    "files": [
+      {
+        "src/switch_hashtable.c": "Custom hash table implementation used throughout the core"
+      }
+    ]
+  },
+  {
+    "topic": "Profile",
+    "title": "System Profiling",
+    "files": [
+      {
+        "src/switch_profile.c": "Performance profiling and statistics collection"
+      }
+    ]
+  },
+  {
+    "topic": "PCM Interface",
+    "title": "PCM Audio Handling",
+    "files": [
+      {
+        "src/switch_pcm.c": "PCM audio data manipulation and interface"
+      }
+    ]
+  }
+]
