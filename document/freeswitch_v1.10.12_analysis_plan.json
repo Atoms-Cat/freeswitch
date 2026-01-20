@@ -36,7 +36,8 @@
     "title": "Session Creation",
     "files": [
       { "src/switch_core_session.c": "switch_core_session_request_xml" }
-    ]
+    ],
+    "done": true
   },
   {
     "topic": "Session Management",
