@@ -1,0 +1,65 @@
+[
+  {
+    "topic": "Dialplan Tools",
+    "title": "Standard Dialplan Applications",
+    "files": [
+      { "src/mod/applications/mod_dptools/mod_dptools.c": "Standard dialplan applications implementation (answer, bridge, sleep, etc.)" }
+    ]
+  },
+  {
+    "topic": "Commands",
+    "title": "API Commands",
+    "files": [
+      { "src/mod/applications/mod_commands/mod_commands.c": "FSAPI commands implementation" }
+    ]
+  },
+  {
+    "topic": "CDR",
+    "title": "Call Detail Records (CSV)",
+    "files": [
+      { "src/mod/event_handlers/mod_cdr_csv/mod_cdr_csv.c": "CSV based CDR generation and writing" }
+    ]
+  },
+  {
+    "topic": "FIFO",
+    "title": "First-In-First-Out Queues",
+    "files": [
+      { "src/mod/applications/mod_fifo/mod_fifo.c": "FIFO queue management implementation" }
+    ]
+  },
+  {
+    "topic": "Valet Parking",
+    "title": "Call Parking",
+    "files": [
+      { "src/mod/applications/mod_valet_parking/mod_valet_parking.c": "Valet parking implementation" }
+    ]
+  },
+  {
+    "topic": "Encryption",
+    "title": "Core Certificate Handling",
+    "files": [
+      { "src/switch_core_cert.c": "TLS/SSL certificate handling and encryption logic" }
+    ]
+  },
+  {
+    "topic": "Spandsp",
+    "title": "Fax and DSP Features",
+    "files": [
+      { "src/mod/applications/mod_spandsp/mod_spandsp.c": "Spandsp integration for Fax and DSP functions" }
+    ]
+  },
+  {
+    "topic": "System Info",
+    "title": "System Logging",
+    "files": [
+      { "src/mod/loggers/mod_syslog/mod_syslog.c": "System logging integration" }
+    ]
+  },
+  {
+    "topic": "Say Interface",
+    "title": "English Language Pronunciation",
+    "files": [
+      { "src/mod/say/mod_say_en/mod_say_en.c": "English language specific number/date pronunciation logic" }
+    ]
+  }
+]
