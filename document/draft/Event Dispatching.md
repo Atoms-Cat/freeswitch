@@ -1,6 +1,6 @@
 # Event Dispatching
 
-作为一名长期在通信领域摸爬滚打的开发者，我一直把 FreeSWITCH 的事件系统（Event System）比作它的“神经系统”。它负责在核心（Core）、模块（Modules）和外部应用（ESL）之间传递信号。
+FreeSWITCH 的事件系统（Event System）比作它的“神经系统”。它负责在核心（Core）、模块（Modules）和外部应用（ESL）之间传递信号。
 
 你可能遇到过这样的场景：系统在高并发下突然“卡死”，或者某些事件莫名其妙地延迟到达。很多时候，这些问题的根源都在于我们对 FreeSWITCH 事件分发机制的误解。
 

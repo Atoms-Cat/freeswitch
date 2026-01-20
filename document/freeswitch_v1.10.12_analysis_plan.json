@@ -45,7 +45,8 @@
     "files": [
       { "src/switch_core_session.c": "switch_core_session_run" },
       { "src/switch_channel.c": "switch_channel_set_state" }
-    ]
+    ],
+    "done": true
   },
   {
     "topic": "Media/IO Subsystem",
