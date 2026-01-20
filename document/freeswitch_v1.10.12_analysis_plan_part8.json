@@ -1,0 +1,67 @@
+[
+  {
+    "topic": "Blacklist",
+    "title": "Call Blocking Module",
+    "files": [
+      { "src/mod/applications/mod_blacklist/mod_blacklist.c": "Module entry point, blacklist API and application handling" }
+    ]
+  },
+  {
+    "topic": "Fail2Ban",
+    "title": "Fail2Ban Integration",
+    "files": [
+      { "src/mod/event_handlers/mod_fail2ban/mod_fail2ban.c": "Event handler for Fail2Ban integration, logging failed attempts" }
+    ]
+  },
+  {
+    "topic": "Directory (LDAP)",
+    "title": "LDAP Directory Integration",
+    "files": [
+      { "src/mod/directories/mod_ldap/mod_ldap.c": "LDAP connection management, directory search and authentication" }
+    ]
+  },
+  {
+    "topic": "SNMP",
+    "title": "SNMP Agent",
+    "files": [
+      { "src/mod/event_handlers/mod_snmp/mod_snmp.c": "SNMP module initialization and event handling" },
+      { "src/mod/event_handlers/mod_snmp/subagent.c": "SNMP subagent implementation" }
+    ]
+  },
+  {
+    "topic": "Format (Shout)",
+    "title": "MP3 and Icecast Support",
+    "files": [
+      { "src/mod/formats/mod_shout/mod_shout.c": "MP3 format handling, Shoutcast/Icecast streaming" }
+    ]
+  },
+  {
+    "topic": "Format (PortAudio)",
+    "title": "Local Audio Hardware",
+    "files": [
+      { "src/mod/endpoints/mod_portaudio/mod_portaudio.c": "PortAudio endpoint implementation, device management" },
+      { "src/mod/endpoints/mod_portaudio/pablio.c": "PortAudio blocking I/O wrapper" }
+    ]
+  },
+  {
+    "topic": "Core Utils",
+    "title": "General Utility Functions",
+    "files": [
+      { "src/switch_utils.c": "String manipulation, network utilities, and general helper functions" }
+    ]
+  },
+  {
+    "topic": "Core Config",
+    "title": "Configuration Parsing",
+    "files": [
+      { "src/switch_config.c": "Configuration file parsing logic (name/value pairs)" }
+    ]
+  },
+  {
+    "topic": "Core Time",
+    "title": "Time Handling",
+    "files": [
+      { "src/switch_time.c": "Time measurement, sleep functions, and time zone handling" }
+    ]
+  }
+]
