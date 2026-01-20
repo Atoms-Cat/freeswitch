@@ -4,21 +4,24 @@
     "title": "System Initialization",
     "files": [
       { "src/switch_core.c": "switch_core_init" }
-    ]
+    ],
+    "done": true
   },
   {
     "topic": "Core Architecture",
     "title": "Memory Management",
     "files": [
       { "src/switch_core.c": "switch_core_perform_new_memory_pool" }
-    ]
+    ],
+    "done": true
   },
   {
     "topic": "Event System",
     "title": "Event Dispatching",
     "files": [
       { "src/switch_event.c": "switch_event_fire_detailed" }
-    ]
+    ],
+    "done": true
   },
   {
     "topic": "Event System",
