@@ -1,0 +1,75 @@
+[
+  {
+    "topic": "Skinny Protocol (SCCP)",
+    "title": "Cisco Skinny Protocol Implementation",
+    "files": [
+      { "src/mod/endpoints/mod_skinny/mod_skinny.c": "Main module entry point, load/shutdown, and event handling" },
+      { "src/mod/endpoints/mod_skinny/skinny_protocol.c": "SCCP protocol message parsing and formatting" },
+      { "src/mod/endpoints/mod_skinny/skinny_server.c": "Socket handling and server logic for Skinny clients" },
+      { "src/mod/endpoints/mod_skinny/skinny_tables.c": "Translation tables for Skinny messages and types" }
+    ]
+  },
+  {
+    "topic": "RTMP Protocol",
+    "title": "Flash Streaming Protocol Support",
+    "files": [
+      { "src/mod/endpoints/mod_rtmp/mod_rtmp.c": "Module initialization and RTMP session management" },
+      { "src/mod/endpoints/mod_rtmp/rtmp.c": "Core RTMP protocol implementation" },
+      { "src/mod/endpoints/mod_rtmp/rtmp_tcp.c": "TCP transport handling for RTMP" }
+    ]
+  },
+  {
+    "topic": "Unicast/Multicast",
+    "title": "Local Stream and Multicast Handling",
+    "files": [
+      { "src/mod/formats/mod_local_stream/mod_local_stream.c": "Streaming media from local files or generated content" }
+    ]
+  },
+  {
+    "topic": "External Libraries",
+    "title": "APR and Sofia-SIP Integration",
+    "files": [
+      { "libs/apr/include/apr_pools.h": "APR memory pool interface used throughout FreeSWITCH" },
+      { "libs/apr/include/apr_thread_proc.h": "APR thread and process management definitions" },
+      { "src/mod/endpoints/mod_sofia/mod_sofia.c": "Integration point with Sofia-SIP library (library itself is external/downloaded)" }
+    ]
+  },
+  {
+    "topic": "AMQP (RabbitMQ)",
+    "title": "Advanced Message Queuing Protocol Integration",
+    "files": [
+      { "src/mod/event_handlers/mod_amqp/mod_amqp.c": "Main AMQP module logic and configuration loading" },
+      { "src/mod/event_handlers/mod_amqp/mod_amqp_producer.c": "Logic for producing messages to the AMQP broker" },
+      { "src/mod/event_handlers/mod_amqp/mod_amqp_connection.c": "Connection management with the AMQP broker" }
+    ]
+  },
+  {
+    "topic": "HTTP Cache",
+    "title": "HTTP Resource Caching",
+    "files": [
+      { "src/mod/applications/mod_http_cache/mod_http_cache.c": "Caching mechanism for HTTP resources (audio, etc.)" },
+      { "src/mod/applications/mod_http_cache/common.c": "Common utility functions for HTTP caching" }
+    ]
+  },
+  {
+    "topic": "EasyRoute",
+    "title": "Database Driven Routing",
+    "files": [
+      { "src/mod/applications/mod_easyroute/mod_easyroute.c": "Routing logic based on database lookups (DID, etc.)" }
+    ]
+  },
+  {
+    "topic": "LCR (Least Cost Routing)",
+    "title": "Least Cost Routing Module",
+    "files": [
+      { "src/mod/applications/mod_lcr/mod_lcr.c": "LCR logic implementation, profile loading, and route selection" }
+    ]
+  },
+  {
+    "topic": "Distributor",
+    "title": "Load Balancing Distributor",
+    "files": [
+      { "src/mod/applications/mod_distributor/mod_distributor.c": "Round-robin and weight-based distribution logic" }
+    ]
+  }
+]
