@@ -55,7 +55,8 @@
       { "src/switch_rtp.c": "switch_rtp_create" },
       { "src/switch_rtp.c": "switch_rtp_read" },
       { "src/switch_rtp.c": "switch_rtp_write" }
-    ]
+    ],
+    "done": true
   },
   {
     "topic": "Media/IO Subsystem",
@@ -63,21 +64,24 @@
     "files": [
       { "src/switch_core_media.c": "switch_media_handle_create" },
       { "src/switch_core_media.c": "switch_core_media_read_frame" }
-    ]
+    ],
+    "done": true
   },
   {
     "topic": "Loadable Modules",
     "title": "Module Loading",
     "files": [
       { "src/switch_loadable_module.c": "switch_loadable_module_load_module_ex" }
-    ]
+    ],
+    "done": true
   },
   {
     "topic": "Loadable Modules",
     "title": "Interface Registration",
     "files": [
       { "src/switch_loadable_module.c": "switch_loadable_module_process" }
-    ]
+    ],
+    "done": true
   },
   {
     "topic": "SIP Signaling (mod_sofia)",
@@ -85,7 +89,8 @@
     "files": [
       { "src/mod/endpoints/mod_sofia/mod_sofia.c": "mod_sofia_load" },
       { "src/mod/endpoints/mod_sofia/mod_sofia.c": "sofia_on_init" }
-    ]
+    ],
+    "done": true
   },
   {
     "topic": "SIP Signaling (mod_sofia)",
@@ -93,6 +98,7 @@
     "files": [
       { "src/mod/endpoints/mod_sofia/mod_sofia.c": "sofia_receive_message" },
       { "src/mod/endpoints/mod_sofia/mod_sofia.c": "sofia_receive_event" }
-    ]
+    ],
+    "done": true
   }
 ]

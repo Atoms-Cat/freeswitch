@@ -1,6 +1,6 @@
 # Event Subscription
 
-作为一名 FreeSWITCH 开发者，如果说 Event Dispatching 是系统的“心脏”，负责将血液（事件）输送到全身，那么 **Event Subscription（事件订阅）** 就是系统的“耳朵”。
+如果说 Event Dispatching 是系统的“心脏”，负责将血液（事件）输送到全身，那么 **Event Subscription（事件订阅）** 就是系统的“耳朵”。
 
 在这篇文章中，我将带你深入 FreeSWITCH 的源码深处，通过分析 `switch_event_bind_removable` 函数（这是 `switch_event_bind` 的核心实现），来揭示事件订阅机制的底层秘密。我们将探讨它是如何通过精妙的数据结构和锁机制，在保证高性能的同时实现灵活的事件监听的。
 
