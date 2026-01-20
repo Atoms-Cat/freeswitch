@@ -1,0 +1,79 @@
+[
+  {
+    "topic": "Language Modules",
+    "title": "Python Integration (mod_python)",
+    "files": [
+      { "src/mod/languages/mod_python/mod_python.c": "mod_python_load, python_function" }
+    ]
+  },
+  {
+    "topic": "Language Modules",
+    "title": "Java Integration (mod_java)",
+    "files": [
+      { "src/mod/languages/mod_java/mod_java.cpp": "mod_java_load, java_function" }
+    ]
+  },
+  {
+    "topic": "Language Modules",
+    "title": "Perl Integration (mod_perl)",
+    "files": [
+      { "src/mod/languages/mod_perl/mod_perl.c": "mod_perl_load, perl_function" }
+    ]
+  },
+  {
+    "topic": "Loopback Endpoint",
+    "title": "Internal Loopback Calls (mod_loopback)",
+    "files": [
+      { "src/mod/endpoints/mod_loopback/mod_loopback.c": "mod_loopback_load, loopback_endpoint_interface" }
+    ]
+  },
+  {
+    "topic": "Rayo Protocol",
+    "title": "Rayo XMPP Control (mod_rayo)",
+    "files": [
+      { "src/mod/event_handlers/mod_rayo/mod_rayo.c": "mod_rayo_load, rayo_api" }
+    ]
+  },
+  {
+    "topic": "Redis Integration",
+    "title": "Redis Key-Value Store (mod_redis)",
+    "files": [
+      { "src/mod/applications/mod_redis/mod_redis.c": "mod_redis_load, redis_api" }
+    ]
+  },
+  {
+    "topic": "XML RPC",
+    "title": "Remote Procedure Calls (mod_xml_rpc)",
+    "files": [
+      { "src/mod/xml_int/mod_xml_rpc/mod_xml_rpc.c": "mod_xml_rpc_load, xml_rpc_api" }
+    ]
+  },
+  {
+    "topic": "Native File Formats",
+    "title": "Raw File Handling (mod_native_file)",
+    "files": [
+      { "src/mod/formats/mod_native_file/mod_native_file.c": "mod_native_file_load, native_file_interface" }
+    ]
+  },
+  {
+    "topic": "Tone Stream",
+    "title": "Tone Generation (mod_tone_stream)",
+    "files": [
+      { "src/mod/formats/mod_tone_stream/mod_tone_stream.c": "mod_tone_stream_load, tone_stream_interface" }
+    ]
+  },
+  {
+    "topic": "Shell Stream",
+    "title": "Audio from Shell Commands (mod_shell_stream)",
+    "files": [
+      { "src/mod/formats/mod_shell_stream/mod_shell_stream.c": "mod_shell_stream_load, shell_stream_interface" }
+    ]
+  },
+  {
+    "topic": "V8 (JavaScript)",
+    "title": "Google V8 JS Engine (mod_v8)",
+    "files": [
+      { "src/mod/languages/mod_v8/mod_v8.cpp": "mod_v8_load, v8_function" }
+    ]
+  }
+]
