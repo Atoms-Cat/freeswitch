@@ -1,0 +1,58 @@
+[
+  {
+    "topic": "Voicemail",
+    "title": "Voicemail Application",
+    "files": [
+      { "src/mod/applications/mod_voicemail/mod_voicemail.c": "Main voicemail application logic" }
+    ]
+  },
+  {
+    "topic": "XML Curl",
+    "title": "Dynamic Configuration via XML Curl",
+    "files": [
+      { "src/mod/xml_int/mod_xml_curl/mod_xml_curl.c": "XML fetch via HTTP/HTTPS" }
+    ]
+  },
+  {
+    "topic": "Video Core",
+    "title": "Core Video Processing",
+    "files": [
+      { "src/switch_core_video.c": "Video media handling and manipulation" }
+    ]
+  },
+  {
+    "topic": "Jitter Buffer",
+    "title": "Jitter Buffer Implementation",
+    "files": [
+      { "src/switch_jitterbuffer.c": "Packet loss concealment and timing adjustment" }
+    ]
+  },
+  {
+    "topic": "Directory Interface",
+    "title": "User Directory Interface",
+    "files": [
+      { "src/switch_core_directory.c": "User authentication and lookup abstraction" }
+    ]
+  },
+  {
+    "topic": "ASR Abstraction",
+    "title": "Automatic Speech Recognition Core",
+    "files": [
+      { "src/switch_core_asr.c": "Speech recognition interface" }
+    ]
+  },
+  {
+    "topic": "TTS Abstraction",
+    "title": "Text-to-Speech Core",
+    "files": [
+      { "src/switch_core_speech.c": "Speech synthesis interface" }
+    ]
+  },
+  {
+    "topic": "Call Center",
+    "title": "Call Center Application",
+    "files": [
+      { "src/mod/applications/mod_callcenter/mod_callcenter.c": "Queue management and agent distribution" }
+    ]
+  }
+]
