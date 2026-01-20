@@ -1,0 +1,74 @@
+[
+  {
+    "topic": "IVR System",
+    "title": "IVR Operations",
+    "files": [
+      { "src/switch_ivr.c": "switch_ivr_play_file" },
+      { "src/switch_ivr_originate.c": "switch_ivr_originate" }
+    ]
+  },
+  {
+    "topic": "IVR System",
+    "title": "IVR Menus",
+    "files": [
+      { "src/switch_ivr_menu.c": "switch_ivr_menu_init" },
+      { "src/switch_ivr_menu.c": "switch_ivr_menu_execute" }
+    ]
+  },
+  {
+    "topic": "Database Abstraction",
+    "title": "Core DB (SQLite)",
+    "files": [
+      { "src/switch_core_db.c": "switch_core_db_open" },
+      { "src/switch_core_db.c": "switch_core_db_exec" }
+    ]
+  },
+  {
+    "topic": "Database Abstraction",
+    "title": "ODBC Interface",
+    "files": [
+      { "src/switch_odbc.c": "switch_odbc_handle_connect" },
+      { "src/switch_odbc.c": "switch_odbc_handle_exec" }
+    ]
+  },
+  {
+    "topic": "XML Configuration",
+    "title": "XML Parsing & Retrieval",
+    "files": [
+      { "src/switch_xml.c": "switch_xml_parse_file" },
+      { "src/switch_xml.c": "switch_xml_locate" }
+    ]
+  },
+  {
+    "topic": "Scheduler & Time",
+    "title": "Task Scheduling",
+    "files": [
+      { "src/switch_scheduler.c": "switch_scheduler_add_task" },
+      { "src/switch_scheduler.c": "switch_scheduler_task_thread_start" }
+    ]
+  },
+  {
+    "topic": "Logging System",
+    "title": "Log Management",
+    "files": [
+      { "src/switch_log.c": "switch_log_init" },
+      { "src/switch_log.c": "switch_log_printf" }
+    ]
+  },
+  {
+    "topic": "NAT Traversal",
+    "title": "NAT Mapping",
+    "files": [
+      { "src/switch_nat.c": "switch_nat_init" },
+      { "src/switch_nat.c": "switch_nat_add_mapping" }
+    ]
+  },
+  {
+    "topic": "Utility Subsystems",
+    "title": "Regular Expressions",
+    "files": [
+      { "src/switch_regex.c": "switch_regex_compile" },
+      { "src/switch_regex.c": "switch_regex_perform" }
+    ]
+  }
+]
