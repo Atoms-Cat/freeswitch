@@ -28,7 +28,8 @@
     "title": "Event Subscription",
     "files": [
       { "src/switch_event.c": "switch_event_bind_remotes" }
-    ]
+    ],
+    "done": true
   },
   {
     "topic": "Session Management",
