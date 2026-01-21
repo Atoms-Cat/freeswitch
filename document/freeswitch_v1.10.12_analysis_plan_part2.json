@@ -32,7 +32,8 @@
     "files": [
       { "src/switch_odbc.c": "switch_odbc_handle_connect" },
       { "src/switch_odbc.c": "switch_odbc_handle_exec" }
-    ]
+    ],
+    "done": true
   },
   {
     "topic": "XML Configuration",
