@@ -50,7 +50,8 @@
     "files": [
       { "src/switch_scheduler.c": "switch_scheduler_add_task" },
       { "src/switch_scheduler.c": "switch_scheduler_task_thread_start" }
-    ]
+    ],
+    "done": true
   },
   {
     "topic": "Logging System",
@@ -58,7 +59,8 @@
     "files": [
       { "src/switch_log.c": "switch_log_init" },
       { "src/switch_log.c": "switch_log_printf" }
-    ]
+    ],
+    "done": true
   },
   {
     "topic": "NAT Traversal",
@@ -66,7 +68,8 @@
     "files": [
       { "src/switch_nat.c": "switch_nat_init" },
       { "src/switch_nat.c": "switch_nat_add_mapping" }
-    ]
+    ],
+    "done": true
   },
   {
     "topic": "Utility Subsystems",
@@ -74,6 +77,7 @@
     "files": [
       { "src/switch_regex.c": "switch_regex_compile" },
       { "src/switch_regex.c": "switch_regex_perform" }
-    ]
+    ],
+    "done": true
   }
 ]
