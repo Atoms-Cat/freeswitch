@@ -23,7 +23,8 @@
     "files": [
       { "src/switch_core_db.c": "switch_core_db_open" },
       { "src/switch_core_db.c": "switch_core_db_exec" }
-    ]
+    ],
+    "done": true
   },
   {
     "topic": "Database Abstraction",
