@@ -14,7 +14,8 @@
     "files": [
       { "src/switch_ivr_menu.c": "switch_ivr_menu_init" },
       { "src/switch_ivr_menu.c": "switch_ivr_menu_execute" }
-    ]
+    ],
+    "done": true
   },
   {
     "topic": "Database Abstraction",
