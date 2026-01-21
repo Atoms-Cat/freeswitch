@@ -14,7 +14,8 @@
     "files": [
       { "src/mod/event_handlers/mod_event_socket/mod_event_socket.c": "mod_event_socket_load" },
       { "src/mod/event_handlers/mod_event_socket/mod_event_socket.c": "socket_thread" }
-    ]
+    ],
+    "done": true
   },
   {
     "topic": "WebRTC/Verto",
