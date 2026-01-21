@@ -41,7 +41,8 @@
     "files": [
       { "src/switch_xml.c": "switch_xml_parse_file" },
       { "src/switch_xml.c": "switch_xml_locate" }
-    ]
+    ],
+    "done": true
   },
   {
     "topic": "Scheduler & Time",
