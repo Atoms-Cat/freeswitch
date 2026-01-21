@@ -5,7 +5,8 @@
     "files": [
       { "src/mod/applications/mod_conference/mod_conference.c": "mod_conference_load" },
       { "src/mod/applications/mod_conference/conference_api.c": "conference_api_main" }
-    ]
+    ],
+    "done": true
   },
   {
     "topic": "Event Socket Library",
