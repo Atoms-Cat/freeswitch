@@ -5,7 +5,8 @@
     "files": [
       { "src/switch_ivr.c": "switch_ivr_play_file" },
       { "src/switch_ivr_originate.c": "switch_ivr_originate" }
-    ]
+    ],
+    "done": true
   },
   {
     "topic": "IVR System",
